@@ -50,7 +50,9 @@ def plot_decision_boundaries(model, X, y, title='Decision Boundaries'):
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
     plt.title(title)
-    plt.show()
+    # plt.show()
+    plt.savefig(f"{title}.png")
+    plt.close()
 
 
 def read_data_demo(filename='train.csv'):

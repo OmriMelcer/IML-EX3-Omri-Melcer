@@ -15,16 +15,20 @@ class Ridge_Regression:
         :param X: The training features.
         :param Y: The training labels.
         """
+        X = np.hstack((np.ones((X.shape[0], 1)), X))
 
-        Y = 2 * (Y - 0.5) # transform the labels to -1 and 1, instead of 0 and 1.
+        # Y = 2 * (Y - 0.5) # transform the labels to -1 and 1, instead of 0 and 1.
 
         ########## YOUR CODE HERE ##########
 
         # compute the ridge regression weights using the formula from class / exercise.
         # you may not use np.linalg.solve, but you may use np.linalg.inv
-
-        ####################################
-        pass
+        n_train = X.shape[0]
+        # Formula: W* = (X^T X / n_train + lambda I)^-1 (X^T Y / n_train)
+        # We use np.linalg.pinv (Pseudo-inverse, SVD based) to ensure the inner part is invertible.
+        inner = (X.T @ X) / n_train + self.lambd * np.eye(X.shape[1])
+        self.weights = np.linalg.pinv(inner) @ (X.T @ Y) / n_train
+        
 
     def predict(self, X):
         """
@@ -32,18 +36,10 @@ class Ridge_Regression:
         :param X: The data to predict. 
         :return: The predicted output. 
         """
-        preds = None
-        ########## YOUR CODE HERE ##########
-
-        # compute the predicted output of the model.
-        # name your predicitons array preds.
-
-        ####################################
-
-        # transform the labels to 0s and 1s, instead of -1s and 1s.
-        # You may remove this line if your code already outputs 0s and 1s.
-        preds = (preds + 1) / 2
-
+        # Add bias term to X
+        X = np.hstack((np.ones((X.shape[0], 1)), X))
+        preds = X @ self.weights
+        preds = np.where(preds >= 0, 1, -1)
         return preds
 
 
