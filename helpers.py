@@ -5,8 +5,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
+ploted_file = 1
 
-def plot_decision_boundaries(model, X, y, title='Decision Boundaries'):
+def plot_decision_boundaries(model, X, y, title='Decision Boundaries', file_name=None):
     """
     Plots decision boundaries of a classifier and colors the space by the prediction of each point.
 
@@ -16,6 +17,11 @@ def plot_decision_boundaries(model, X, y, title='Decision Boundaries'):
     - y: Numpy array of Labels.
     - title: Title for the plot.
     """
+    global ploted_file
+    if file_name is None:
+        file_name = f"plot_{ploted_file}"
+        ploted_file += 1
+
     # h = .02  # Step size in the mesh
 
     # enumerate y
@@ -51,7 +57,7 @@ def plot_decision_boundaries(model, X, y, title='Decision Boundaries'):
     plt.ylabel("Latitude")
     plt.title(title)
     # plt.show()
-    plt.savefig(f"{title}.png")
+    plt.savefig(f"{file_name}.png")
     plt.close()
 
 

@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from torch import nn
-
+from torch.utils.data import DataLoader, Dataset
 
 class Ridge_Regression:
 
@@ -45,15 +45,15 @@ class Ridge_Regression:
 
 
 class Logistic_Regression(nn.Module):
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, input_dim, output_dim=2):
         super(Logistic_Regression, self).__init__()
 
         ########## YOUR CODE HERE ##########
 
         # define a linear operation.
-
+        self.linear = nn.Linear(input_dim, output_dim)
         ####################################
-        pass
+        
 
     def forward(self, x):
         """
@@ -68,10 +68,11 @@ class Logistic_Regression(nn.Module):
         # return the transformed input.
         # first perform the linear operation
         # should be a single line of code.
+        return self.linear(x)
+        
+        
 
-        ####################################
-
-        pass
+        
 
     def predict(self, x):
         """
@@ -83,3 +84,18 @@ class Logistic_Regression(nn.Module):
         x = x.detach().cpu().numpy()
         x = np.argmax(x, axis=1)
         return x
+
+class SimpleSet(Dataset):
+    def __init__(self,X,y):
+        self.X = torch.from_numpy(X).float()
+        self.Y = torch.from_numpy(y).long()
+        
+    def __len__(self):
+        return len(self.X)
+    
+    def __getitem__(self, idx):
+        return self.X[idx], self.Y[idx]
+        
+        
+        
+        
